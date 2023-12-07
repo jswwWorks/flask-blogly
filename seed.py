@@ -13,13 +13,13 @@ db.create_all()
 # Pet.query.delete()
 
 # Add pets
-nick = User(first_name='Nick', last_name="Orsi")
-julia = User(first_name='Julia', last_name="Williamson")
+# nick = User(first_name='Nick', last_name="Orsi")
+# julia = User(first_name='Julia', last_name="Williamson")
 
 
-# Add new objects to session, so they'll persist
-db.session.add(nick)
-db.session.add(julia)
+# # Add new objects to session, so they'll persist
+# db.session.add(nick)
+# db.session.add(julia)
 
-# Commit--otherwise, this never gets saved!
-db.session.commit()
+# # Commit--otherwise, this never gets saved!
+# db.session.commit()

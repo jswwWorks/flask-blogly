@@ -32,14 +32,14 @@ def show_users():
     """Takes nothing, shows tables using SQLAlchemy.
     Skeleton for application."""
 
-    # users = User.query.all()
-    # return render_template("list.html", users=users)
+    users = User.query.all()
+    return render_template("list.html", users=users)
 
-    try:
-        users = User.query.all()
-        return render_template("list.html", users=users)
-    except:
-        return render_template("list.html")
+    # try:
+    #     users = User.query.all()
+    #     return render_template("list.html", users=users)
+    # except:
+    #     return render_template("list.html")
 
 
 @app.get("/users/new")

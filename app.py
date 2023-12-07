@@ -29,8 +29,8 @@ def home_page():
 
 @app.get("/users")
 def list_users():
-    """Takes nothing, shows tables using SQLAlchemy.
-    Skeleton for application."""
+    """Takes nothing, accesses data base for all current users and renders the
+    list.html to list all first and last names of current users in database."""
 
     users = User.query.all()
     return render_template("list.html", users=users)
@@ -46,8 +46,10 @@ def show_add_user_form():
 
 @app.post("/users/new")
 def create_new_user():
-    """Adds form inputs to database and redirects to users page"""
-
+    """Adds form inputs to database and redirects to users page."""
+    # TODO: Make a data validation file that checks for any inputs with unwanted
+    #spaces on the ends of any characters given. This will also guard for empty
+    #strings. UPDATE DOCSTRING!!!!!
     first_name=request.form["first_name"]
     last_name=request.form["last_name"]
     image_url=request.form["image_url"]
@@ -66,8 +68,7 @@ def create_new_user():
 @app.get("/users/<int:user_id>")
 def show_user(user_id):
     """Routes get requests for each user page and maps corresponding response
-    of rendering the user page.
-    """
+    of rendering the user page. Takes user_id from URL."""
 
     user = User.query.filter_by(id = f"{user_id}").one()
 
@@ -76,7 +77,7 @@ def show_user(user_id):
 
 @app.get("/users/<int:user_id>/edit")
 def show_edit_user_page(user_id):
-    """Takes user_id, renders edit page for user."""
+    """Takes user_id from URL, renders edit page for user."""
 
     user = User.query.filter_by(id = f"{user_id}").one()
 
@@ -85,8 +86,13 @@ def show_edit_user_page(user_id):
 
 @app.post("/users/<int:user_id>/edit")
 def process_edit(user_id):
-    """Takes user_id, renders edit page for user."""
-    print("process_edit route", user_id)
+    """Takes user_id from URL, gathers inputs from the form, determines if
+    user clicked on cancel. If so redirects to /users page without updating
+    database. If user clicked save, gathers inputs from the form, updates the
+    database, and redirects to /users page."""
+     # TODO: Make a data validation file that checks for any inputs with unwanted
+    #spaces on the ends of any characters given. This will also guard for empty
+    #strings. UPDATE DOCSTRING!!!!!
     # Grab form inputs
     first_name=request.form["first_name"]
     last_name=request.form["last_name"]

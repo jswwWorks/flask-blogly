@@ -15,14 +15,16 @@ def connect_db(app):
 
 
 class User(db.Model):
-    """User."""
+    """User Class with properties serial id, first_name, last_name, and
+    image_url."""
 
     __tablename__ = "users"
 
     id = db.Column(
         db.Integer,
         primary_key=True,
-        autoincrement=True)
+        autoincrement=True
+    )
 
     # First and last name should be required
     first_name = db.Column(

@@ -5,7 +5,8 @@ os.environ["DATABASE_URL"] = "postgresql:///blogly_test"
 from unittest import TestCase
 
 from app import app, db
-from models import DEFAULT_IMAGE_URL, User
+from models import User
+# from models import DEFAULT_IMAGE_URL, User
 
 # Make Flask errors be real errors, rather than HTML pages with error info
 app.config['TESTING'] = True
@@ -20,13 +21,13 @@ app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 db.drop_all()
 db.create_all()
 
+TEST_URL = "https://upload.wikimedia.org/wikipedia/commons/4/4f/DandelionFlower.jpg"
 
 class UserViewTestCase(TestCase):
     """Test views for users."""
 
     def setUp(self):
         """Create test client, add sample data."""
-
         # As you add more models later in the exercise, you'll want to delete
         # all of their records before each test just as we're doing with the
         # User model below.
@@ -58,3 +59,24 @@ class UserViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
             self.assertIn("test1_first", html)
             self.assertIn("test1_last", html)
+
+    def test_show_add_user_form(self):
+        with app.test_client() as c:
+            resp = c.get("/users/new")
+            self.assertEqual(resp.status_code, 200)
+            html= resp.get_data(as_text=True)
+            self.assertIn("<!--Comment for test_show_add_", html)
+
+    def test_create_new_user(self):
+        with app.test_client() as c:
+
+            data = {
+                "first_name": "test2_first",
+                "last_name": "test2_last",
+                "image_url": TEST_URL
+            }
+            resp = c.post("/users/new", data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("test2_first", html)

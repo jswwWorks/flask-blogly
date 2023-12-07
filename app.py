@@ -28,18 +28,13 @@ def home_page():
 
 
 @app.get("/users")
-def show_users():
+def list_users():
     """Takes nothing, shows tables using SQLAlchemy.
     Skeleton for application."""
 
     users = User.query.all()
     return render_template("list.html", users=users)
 
-    # try:
-    #     users = User.query.all()
-    #     return render_template("list.html", users=users)
-    # except:
-    #     return render_template("list.html")
 
 
 @app.get("/users/new")
@@ -64,15 +59,6 @@ def create_new_user():
         image_url=image_url)
     db.session.add(new_user)
     db.session.commit()
-
-    # new_user = User()
-    # db.session.add(new_user)
-    # db.session.commit()
-
-    # new_user.first_name = first_name
-    # new_user.last_name = last_name
-    # new_user.image_url = image_url
-    # db.session.commit()
 
     return redirect("/users")
 

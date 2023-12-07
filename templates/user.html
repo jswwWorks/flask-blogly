@@ -8,10 +8,10 @@
 <div class="user-options">
   <h1>{{ user.first_name }} {{ user.last_name }}</h1>
 
-  <form method="GET" action="/user/{{ user.id }}/edit">
+  <form method="GET" action="/users/{{ user.id }}/edit">
     <button>Edit</button>
   </form>
-  <form method="POST" action="/user/{{ user.id }}/delete">
+  <form method="POST" action="/users/{{ user.id }}/delete">
     <button>Delete</button>
   </form>
 </div>

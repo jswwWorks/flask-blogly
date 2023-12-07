@@ -100,24 +100,27 @@ def show_edit_user_page(user_id):
 @app.post("/users/<int:user_id>/edit")
 def process_edit(user_id):
     """Takes user_id, renders edit page for user."""
-
+    print("process_edit route", user_id)
     # Grab form inputs
     first_name=request.form["first_name"]
     last_name=request.form["last_name"]
     image_url=request.form["image_url"]
-
+    status=request.form["action"]
+    if status == "Cancel":
+        return redirect("/users")
     # Process edits
-    user = User.query.filter_by(id = f"{user_id}").one()
+    else:
+        user = User.query.filter_by(id = f"{user_id}").one()
 
-    # Override w/ changes (or leave defaults as need)
-    user.first_name = first_name
-    user.last_name = last_name
-    user.image_url = image_url
-    # TODO: test to make sure edit feature works
+        # Override w/ changes (or leave defaults as need)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.image_url = image_url
+        # TODO: test to make sure edit feature works
 
-    db.session.commit()
+        db.session.commit()
 
-    return redirect ("/users")
+        return redirect ("/users")
 
 @app.post("/users/<int:user_id>/delete")
 def delete_user(user_id):

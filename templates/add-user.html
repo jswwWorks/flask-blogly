@@ -3,6 +3,11 @@
 {% block title %}Create a User{% endblock %}
 
 {% block content %}
+
+  {% for msg in get_flashed_messages() %}
+    <p>{{ msg }}</p>
+  {% endfor %}
+
   <h2>Create a user</h2>
 
   <!--Comment for test_show_add_user_form, please don't remove.-->

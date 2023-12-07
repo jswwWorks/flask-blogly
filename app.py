@@ -2,10 +2,12 @@
 
 import os
 
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, connect_db, User
+
+from data import validate_names
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
@@ -46,18 +48,28 @@ def show_add_user_form():
 
 @app.post("/users/new")
 def create_new_user():
-    """Adds form inputs to database and redirects to users page."""
-    # TODO: Make a data validation file that checks for any inputs with unwanted
-    #spaces on the ends of any characters given. This will also guard for empty
-    #strings. UPDATE DOCSTRING!!!!!
+    """Takes nothing, grabs user inputs from form. Validates inputs. If invalid,
+    returns user to start form. If valid, adds form inputs to database and
+    redirects to users page."""
+
     first_name=request.form["first_name"]
     last_name=request.form["last_name"]
     image_url=request.form["image_url"]
 
-    # TODO: What happens if forms are submitted with info the DB doesn't like?
+    # result will either be a list of first_name and last_name with any
+    # whitespace stripped, or if inputs are empty, result will be False.
+    result = validate_names(first_name, last_name)
+
+    if result == False:
+        # Send user back to new users form if they had invalid input(s)
+
+        flash('Please try again.' +
+            ' First and last names must each contain at least 1 character.')
+        return redirect("/users/new")
+
     new_user = User(
-        first_name=first_name,
-        last_name=last_name,
+        first_name=result[0],
+        last_name=result[1],
         image_url=image_url)
     db.session.add(new_user)
     db.session.commit()
@@ -98,17 +110,29 @@ def process_edit(user_id):
     last_name=request.form["last_name"]
     image_url=request.form["image_url"]
     status=request.form["action"]
+
     if status == "Cancel":
         return redirect("/users")
+
+
     # Process edits
     else:
         user = User.query.filter_by(id = f"{user_id}").one()
 
+        # Validate inputs
+        result = validate_names(first_name, last_name)
+
+        if result == False:
+            # Send user back to new users form if they had invalid input(s)
+
+            flash('Please try again.' +
+                ' First and last names must each contain at least 1 character.')
+            return redirect(f"/users/{user_id}/edit")
+
         # Override w/ changes (or leave defaults as need)
-        user.first_name = first_name
-        user.last_name = last_name
+        user.first_name = result[0]
+        user.last_name = result[1]
         user.image_url = image_url
-        # TODO: test to make sure edit feature works
 
         db.session.commit()
 

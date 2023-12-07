@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
 
+
 {% block title %}Edit a User{% endblock %}
 
 {% block content %}
+
+  {% for msg in get_flashed_messages() %}
+    <p>{{ msg }}</p>
+  {% endfor %}
+
   <h2>Edit a user</h2>
   <form method="POST" action="/users/{{ user.id }}/edit">
     <p>First Name:
@@ -28,11 +34,6 @@
           value="{{ user.image_url }}">
     </p>
 
-    <!-- <form method="GET" action="/users">
-      <button>Cancel</button>
-    </form> -->
-
-    <!-- <button type="submit">Save</button> -->
     <input type="submit" name="action" value="Cancel">
     <input type="submit" name="action" value="Save">
   </form>

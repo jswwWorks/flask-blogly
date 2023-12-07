@@ -128,3 +128,13 @@ class UserViewTestCase(TestCase):
             self.assertIn("save_first", html_for_save)
             self.assertNotIn("test1_first", html_for_save)
 
+    def test_delete_user(self):
+        """Tests functionality of delete_user route."""
+        with app.test_client() as c:
+            resp_to_delete = c.post(
+                f"/users/{self.user_id}/delete",
+                follow_redirects=True
+            )
+            html_for_delete = resp_to_delete.get_data(as_text=True)
+            self.assertEqual(resp_to_delete.status_code, 200)
+            self.assertNotIn("test1_first", html_for_delete)

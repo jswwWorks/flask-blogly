@@ -35,7 +35,29 @@ def show_users():
 def show_add_user_form():
     """Shows new user form."""
 
-    return render_template()
+    return render_template('add-user.html')
 
 
-@
+@app.post("/users/new")
+def create_new_user():
+    """Adds form inputs to database and redirects to users page"""
+
+    first_name=request.form["first_name"]
+    last_name=request.form["last_name"]
+    image_url=request.form["image_url"]
+
+    # TODO: What happens if forms are submitted with info the DB doesn't like?
+    new_user = User(first_name, last_name, image_url)
+
+    return redirect("/users")
+
+@app.get("/users<int:user_id>")
+def show_user(user_id):
+    """Routes get requests for each user page and maps corresponding response
+    of rendering the user page.
+    """
+
+    user = User.query.filter_by(id = f"{user_id}").one()
+
+    return render_template("user.html", user=user)
+

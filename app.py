@@ -51,7 +51,7 @@ def create_new_user():
 
     return redirect("/users")
 
-@app.get("/users<int:user_id>")
+@app.get("/users/<int:user_id>")
 def show_user(user_id):
     """Routes get requests for each user page and maps corresponding response
     of rendering the user page.

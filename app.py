@@ -5,7 +5,7 @@ import os
 from flask import Flask, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 from data import validate_names
 
@@ -147,5 +147,36 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect ("/users")
+
+
+# Below are routes related to blog posts
+
+@app.get("/users/<int:user_id>/posts/new")
+def show_add_post_form(user_id):
+    """Renders form for user to add blog post."""
+
+    user = User.query.get_or_404(user_id)
+    return redirect(f"/users/{user_id}/posts/new")
+
+
+@app.post("/users/<int:user_id>/posts/new")
+def process_add_post_form(user_id):
+    """Process form for user's new blog post. Adds post and redirects
+    to the user's profile page."""
+
+    # TODO: Add html for this form
+
+    title=request.form["title"]
+    content=request.form["content"]
+
+    new_post = Post(
+        title=title,
+        content=content)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect(f"/users/{user_id}")
+
 
 

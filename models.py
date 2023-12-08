@@ -15,8 +15,7 @@ def connect_db(app):
 
 
 class User(db.Model):
-    """User Class with properties serial id, first_name, last_name, and
-    image_url."""
+    """User Class."""
 
     __tablename__ = "users"
 
@@ -39,6 +38,41 @@ class User(db.Model):
 
     # TODO: in further study, add a default image
     image_url = db.Column(
-        db.String(1000),
+        db.Text,
         nullable=False
     )
+
+class Post(db.Model):
+    """Post class."""
+
+    __tablename__ = "posts"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        autoincrement=True
+    )
+
+    title = db.Column(
+        db.String(100),
+        nullable=False,
+        default="Working Title"
+    )
+
+    # Debating whether to make it db.Text or db.String(large num)
+    content = db.Column(
+        db.String(10000),
+        nullable=False
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=db.func.now(),
+        nullable=False
+    )
+
+    user_id = db.Column(
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+

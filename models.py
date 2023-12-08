@@ -61,7 +61,7 @@ class Post(db.Model):
 
     # Debating whether to make it db.Text or db.String(large num)
     content = db.Column(
-        db.String(10000),
+        db.String(10000), # Typically it'll be db.Text -- db.Text has a built-in uppper bound ~64K
         nullable=False
     )
 
@@ -72,7 +72,8 @@ class Post(db.Model):
     )
 
     user_id = db.Column(
-        db.ForeignKey("users.id"),
+        db.Integer, # good to make it explicit
+        db.ForeignKey("users.id"), # Still give this a type (make it explicit)
         nullable=False
     )
 

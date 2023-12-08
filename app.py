@@ -167,7 +167,9 @@ def process_add_post_form(user_id):
     # TODO: Post validation for empty content
     title=request.form["title"]
     content=request.form["content"]
-    status=request.form["action"]
+    status=request.form["action"] # Look @ soln for details on the add post form
+    # you can set form action (it has preset attributes. can have button make a
+    # get request rather than a post request)
 
     # TODO: Better to use == "Add", do Post instance, then return?
     if status == "Cancel":

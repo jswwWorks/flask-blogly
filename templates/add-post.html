@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Post{% endblock %}
+
+{% block content %}
+<!-- TODO: Handle validating posts, shouldn't have empty content -->
+{% for msg in get_flashed_messages() %}
+      <p>{{ msg }}</p>
+    {% endfor %}
+    <h2>Add Post for {{ user.first_name }} {{ user.last_name }} </h2>
+    <form method="POST" action="/users/{{ user.id }}posts/new">
+      <p>Title</p>
+      <input
+        required
+        name="title"
+        type="text">
+      <p>Content</p>
+      <textarea
+        required
+        rows="3"
+        columns="50"
+        name="content"></textarea>
+      <input
+        type="submit"
+        name="action"
+        value="Cancel"
+        class="btn btn-outline-info m-2">
+      <input
+        type="submit"
+        name="action"
+        value="Add"
+        class="btn btn-success m-2">
+    </form>
+  </div>
+{% endblock %}

@@ -82,9 +82,8 @@ def show_user(user_id):
     page. Takes user_id from URL."""
 
     user = User.query.get_or_404(user_id)
-    # user = User.query.filter_by(id = f"{user_id}").one()
-
-    return render_template("user.html", user=user)
+    user_posts = Post.query.filter(Post.user_id == f"{user_id}").all()
+    return render_template("user.html", user=user, posts=user_posts)
 
 
 @app.get("/users/<int:user_id>/edit")
@@ -156,7 +155,7 @@ def show_add_post_form(user_id):
     """Renders form for user to add blog post."""
 
     user = User.query.get_or_404(user_id)
-    return redirect(f"/users/{user_id}/posts/new")
+    return render_template("add-post.html", user=user)
 
 
 @app.post("/users/<int:user_id>/posts/new")
@@ -164,10 +163,15 @@ def process_add_post_form(user_id):
     """Process form for user's new blog post. Adds post and redirects
     to the user's profile page."""
 
-    # TODO: Add html for this form
-
+    user = User.query.get_or_404(user_id)
+    # TODO: Post validation for empty content
     title=request.form["title"]
     content=request.form["content"]
+    status=request.form["action"]
+
+    # TODO: Better to use == "Add", do Post instance, then return?
+    if status == "Cancel":
+        return redirect(f"/users/{user_id}")
 
     new_post = Post(
         title=title,

@@ -25,6 +25,16 @@
         </div>
       </div>
     </div>
+    <div class="container">
+      <h2>Posts</h2>
+      <ul>
+        {% for post in posts %}
+        <li><a href="/posts/{{ post.id }}">
+          {{ post.title }}
+        </a></li>
+      </ul>
+    </div>
   </div>
+  <a href="/users/{{ user.id }}/posts/new" class="btn btn-primary">Add Post</a>
 </div>
 {% endblock %}

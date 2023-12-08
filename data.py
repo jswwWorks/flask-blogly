@@ -1,6 +1,3 @@
-"""File for validating user input data. Users will input a first_name, a
-last_name, and an optional image_url for their Flask Blogly profile. This will
-validate the first and last name."""
 
 def validate_names(first_name, last_name):
     """Takes user input of strings first_name and last_name. Checks whether each

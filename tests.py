@@ -75,7 +75,7 @@ class UserViewTestCase(TestCase):
 
     def test_create_new_user(self):
         """Tests route create_new_user for data that is posted on the add
-        new user form."""
+        new user form and rendered on /users page."""
 
         with app.test_client() as c:
 

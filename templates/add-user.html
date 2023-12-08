@@ -4,40 +4,37 @@
 
 {% block content %}
 
-  {% for msg in get_flashed_messages() %}
-    <p>{{ msg }}</p>
-  {% endfor %}
 
-  <h2>Create a user</h2>
+<!--Comment for test_show_add_user_form, please don't remove.-->
+<div class="container">
+    {% for msg in get_flashed_messages() %}
+      <p>{{ msg }}</p>
+    {% endfor %}
 
-  <!--Comment for test_show_add_user_form, please don't remove.-->
-
-  <form method="POST" action="/users/new">
-    <p>First Name:
-        <input
-          required
-          name="first_name"
-          type="text"
-          placeholder="Enter a first name">
-    </p>
-
-    <p>Last Name:
-        <input
-          required
-          name="last_name"
-          type="text"
-          placeholder="Enter a last name">
-    </p>
-
-    <p>Image URL:
-        <input
-          name="image_url"
-          type="url"
-          placeholder="Provide an image of this user">
-    </p>
-
-    <button>Add</button>
-  </form>
+    <h2>Create a user</h2>
+    <form method="POST" action="/users/new">
+      <p>First Name:</p>
+      <input
+        required
+        name="first_name"
+        type="text"
+        placeholder="Enter a first name">
+      <p class="mt-2">Last Name:</p>
+      <input
+        required
+        name="last_name"
+        type="text"
+        placeholder="Enter a last name">
+      <p class="mt-2">Image URL: </p>
+      <input
+        name="image_url"
+        type="url"
+        placeholder="Provide an image of this user">
+      <div>
+        <button class="btn btn-success m-2">Add</button>
+      </div>
+    </form>
+  </div>
 {% endblock %}
 
 <!--TODO: work on formatting <p> elements around inputs. Potentially change

@@ -20,11 +20,10 @@ connect_db(app)
 app.config['SECRET_KEY'] = "SECRET!"
 debug = DebugToolbarExtension(app)
 
-# FIXME: check on docstrings
 
 @app.get("/")
 def home_page():
-    """Redirects to users list."""
+    """Redirects to users /users."""
 
     return redirect("/users")
 
@@ -49,8 +48,8 @@ def show_add_user_form():
 @app.post("/users/new")
 def create_new_user():
     """Takes nothing, grabs user inputs from form. Validates inputs. If invalid,
-    returns user to start form. If valid, adds form inputs to database and
-    redirects to users page."""
+    returns user /users/new. If valid, adds form inputs to database and
+    redirects to /users page."""
 
     first_name=request.form["first_name"]
     last_name=request.form["last_name"]
@@ -66,7 +65,7 @@ def create_new_user():
         flash('Please try again.' +
             ' First and last names must each contain at least 1 character.')
         return redirect("/users/new")
-
+    # If result not False create new user
     new_user = User(
         first_name=result[0],
         last_name=result[1],
@@ -79,8 +78,8 @@ def create_new_user():
 
 @app.get("/users/<int:user_id>")
 def show_user(user_id):
-    """Routes get requests for each user page and maps corresponding response
-    of rendering the user page. Takes user_id from URL."""
+    """Routes get requests for each user page and renders the respective user
+    page. Takes user_id from URL."""
 
     user = User.query.filter_by(id = f"{user_id}").one()
 
@@ -99,13 +98,13 @@ def show_edit_user_page(user_id):
 @app.post("/users/<int:user_id>/edit")
 def process_edit(user_id):
     """Takes user_id from URL, gathers inputs from the form, determines if
-    user clicked on cancel. If so redirects to /users page without updating
-    database. If user clicked save, gathers inputs from the form, updates the
-    database, and redirects to /users page."""
-     # TODO: Make a data validation file that checks for any inputs with unwanted
-    #spaces on the ends of any characters given. This will also guard for empty
-    #strings. UPDATE DOCSTRING!!!!!
-    # Grab form inputs
+    user clicked on cancel.
+    If so redirects to /users page without updating database.
+    If user clicked save, gathers inputs from the form, validates data.
+        If invalid, redirects to /users/<int:user_id>/edit and flashes message.
+        If valid, updates the database, and redirects to /users page.
+    """
+
     first_name=request.form["first_name"]
     last_name=request.form["last_name"]
     image_url=request.form["image_url"]
@@ -114,8 +113,6 @@ def process_edit(user_id):
     if status == "Cancel":
         return redirect("/users")
 
-
-    # Process edits
     else:
         user = User.query.filter_by(id = f"{user_id}").one()
 
@@ -124,12 +121,11 @@ def process_edit(user_id):
 
         if result == False:
             # Send user back to new users form if they had invalid input(s)
-
             flash('Please try again.' +
                 ' First and last names must each contain at least 1 character.')
             return redirect(f"/users/{user_id}/edit")
 
-        # Override w/ changes (or leave defaults as need)
+        # If result not False override w/ changes (or leave defaults as need)
         user.first_name = result[0]
         user.last_name = result[1]
         user.image_url = image_url

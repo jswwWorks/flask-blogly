@@ -5,36 +5,40 @@
 
 {% block content %}
 
-  {% for msg in get_flashed_messages() %}
-    <p>{{ msg }}</p>
-  {% endfor %}
-
-  <h2>Edit a user</h2>
-  <form method="POST" action="/users/{{ user.id }}/edit">
-    <p>First Name:
-        <input
-          required
-          name="first_name"
-          type="text"
-          value="{{ user.first_name }}">
-    </p>
-
-    <p>Last Name:
-        <input
-          required
-          name="last_name"
-          type="text"
-          value="{{ user.last_name }}">
-    </p>
-
-    <p>Image URL:
-        <input
-          name="image_url"
-          type="url"
-          value="{{ user.image_url }}">
-    </p>
-
-    <input type="submit" name="action" value="Cancel">
-    <input type="submit" name="action" value="Save">
-  </form>
+<div class="container">
+    {% for msg in get_flashed_messages() %}
+      <p>{{ msg }}</p>
+    {% endfor %}
+    <h2>Edit a user</h2>
+    <form method="POST" action="/users/{{ user.id }}/edit">
+      <p>First Name:</p>
+      <input
+        required
+        name="first_name"
+        type="text"
+        value="{{ user.first_name }}">
+      <p>Last Name:</p>
+      <input
+        required
+        name="last_name"
+        type="text"
+        value="{{ user.last_name }}">
+      <p>Image URL: </p>
+      <input
+        name="image_url"
+        type="url"
+        value="{{ user.image_url }}">
+      <br>
+      <input
+        type="submit"
+        name="action"
+        value="Cancel"
+        class="btn btn-outline-info m-2">
+      <input
+        type="submit"
+        name="action"
+        value="Save"
+        class="btn btn-success m-2">
+    </form>
+  </div>
 {% endblock %}

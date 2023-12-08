@@ -81,7 +81,8 @@ def show_user(user_id):
     """Routes get requests for each user page and renders the respective user
     page. Takes user_id from URL."""
 
-    user = User.query.filter_by(id = f"{user_id}").one()
+    user = User.query.get_or_404(user_id)
+    # user = User.query.filter_by(id = f"{user_id}").one()
 
     return render_template("user.html", user=user)
 
@@ -90,7 +91,8 @@ def show_user(user_id):
 def show_edit_user_page(user_id):
     """Takes user_id from URL, renders edit page for user."""
 
-    user = User.query.filter_by(id = f"{user_id}").one()
+    user = User.query.get_or_404(user_id)
+    # user = User.query.filter_by(id = f"{user_id}").one()
 
     return render_template("edit-user.html", user=user)
 
@@ -113,33 +115,34 @@ def process_edit(user_id):
     if status == "Cancel":
         return redirect("/users")
 
-    else:
-        user = User.query.filter_by(id = f"{user_id}").one()
+    user = User.query.get_or_404(user_id)
 
-        # Validate inputs
-        result = validate_names(first_name, last_name)
+    # Validate inputs
+    result = validate_names(first_name, last_name)
 
-        if result == False:
-            # Send user back to new users form if they had invalid input(s)
-            flash('Please try again.' +
-                ' First and last names must each contain at least 1 character.')
-            return redirect(f"/users/{user_id}/edit")
+    if result == False:
+        # Send user back to new users form if they had invalid input(s)
+        flash('Please try again.' +
+            ' First and last names must each contain at least 1 character.')
+        return redirect(f"/users/{user_id}/edit")
 
-        # If result not False override w/ changes (or leave defaults as need)
-        user.first_name = result[0]
-        user.last_name = result[1]
-        user.image_url = image_url
+    # If result not False override w/ changes (or leave defaults as need)
+    user.first_name = result[0]
+    user.last_name = result[1]
+    user.image_url = image_url
 
-        db.session.commit()
+    db.session.commit()
 
-        return redirect ("/users")
+    return redirect ("/users")
+
 
 @app.post("/users/<int:user_id>/delete")
 def delete_user(user_id):
     """Deletes user from database, redirects to /users homepage.
     """
 
-    user = User.query.filter_by(id = f"{user_id}").one()
+    # user = User.query.filter_by(id = f"{user_id}").one()
+    user = User.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()
 

@@ -138,3 +138,12 @@ class UserViewTestCase(TestCase):
             html_for_delete = resp_to_delete.get_data(as_text=True)
             self.assertEqual(resp_to_delete.status_code, 200)
             self.assertNotIn("test1_first", html_for_delete)
+
+
+# Note to self: make new TestCase for different idea
+
+# Doctest for input validation function
+
+# Unit test for negative input (e.g. invalid input)
+
+# Deconstruct tests into smaller portions

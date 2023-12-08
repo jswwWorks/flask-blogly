@@ -40,5 +40,5 @@ class User(db.Model):
     # TODO: in further study, add a default image
     image_url = db.Column(
         db.String(1000),
-        nullable=True
+        nullable=False
     )
